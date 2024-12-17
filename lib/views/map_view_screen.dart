@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:location_app/Routes/app_routes.dart';
 import 'package:location_app/views/list_view_screen.dart';
+
 import '../controllers/location_controller.dart';
 
 class MapViewScreen extends StatelessWidget {
   final LocationController controller = Get.find<LocationController>();
+
+  MapViewScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class MapViewScreen extends StatelessWidget {
           IconButton(
             icon: const Icon(Icons.list),
             onPressed: () {
-              Get.to(AppRoutes.list); // Navigate to ListViewScreen
+              Get.to(() => ListViewScreen()); // Navigate to ListViewScreen
             },
           ),
         ],

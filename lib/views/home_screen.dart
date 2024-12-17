@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:location_app/Routes/app_routes.dart';
 import '../controllers/location_controller.dart';
 import 'list_view_screen.dart';
 import 'map_view_screen.dart';
@@ -47,9 +46,9 @@ class HomeScreen extends StatelessWidget {
                       onPressed: () {
                         isMapView.value = !isMapView.value;
                         if (isMapView.value) {
-                          Get.to(AppRoutes.map);
+                          Get.to(() => MapViewScreen());
                         } else {
-                          Get.to(AppRoutes.list);
+                          Get.to(() => ListViewScreen());
                         }
                       },
                       child: Text(isMapView.value ? "View List" : "View Map"),

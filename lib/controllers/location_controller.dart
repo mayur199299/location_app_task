@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:location_app/model/place_model.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:geocoding/geocoding.dart';  // Added geocoding package for reverse geocoding
 
 class LocationController extends GetxController {
   Rx<Position?> currentPosition = Rx<Position?>(null);
@@ -14,7 +15,6 @@ class LocationController extends GetxController {
   void onInit() {
     super.onInit();
     fetchUserLocation();
-    loadMockPlaces();
   }
 
   // Fetch User Geolocation
@@ -44,6 +44,7 @@ class LocationController extends GetxController {
       }
 
       currentPosition.value = await Geolocator.getCurrentPosition();
+      await loadMockPlaces(); // Load places based on the current location
       addMarkers(); // Add markers once the user's location is fetched
     } catch (e) {
       Get.snackbar("Error", "Failed to get location: $e");
@@ -52,8 +53,86 @@ class LocationController extends GetxController {
     }
   }
 
-  // Load Mock Data for Nearby Places
-  void loadMockPlaces() {
+  // Load Mock Data for Nearby Places based on User's Location
+  Future<void> loadMockPlaces() async {
+    if (currentPosition.value != null) {
+      List<Placemark> placemarks = await GeocodingPlatform.instance!.placemarkFromCoordinates(currentPosition.value!.latitude, currentPosition.value!.longitude);
+
+      String city = placemarks[0].locality ?? "";
+
+      // Check the city and load relevant places
+      if (city.toLowerCase().contains('ahmedabad')) {
+        _loadAhmedabadPlaces();
+      } else if (city.toLowerCase().contains('baroda')) {
+        _loadBarodaPlaces();
+      } else if (city.toLowerCase().contains('australia')) {
+        _loadAustraliaPlaces();
+      } else {
+        _loadDefaultPlaces();
+      }
+    }
+  }
+
+  // Load Ahmedabad places
+  void _loadAhmedabadPlaces() {
+    places.addAll([
+      PlaceModel(
+        name: "Sabarmati Riverfront",
+        type: "Park",
+        distance: "2.0 km",
+        latitude: 23.0225,
+        longitude: 72.5714,
+        thumbnailUrl: "https://picsum.photos/seed/ahmedabad/200/300",
+      ),
+      PlaceModel(
+        name: "Manek Chowk",
+        type: "Market",
+        distance: "1.0 km",
+        latitude: 23.0226,
+        longitude: 72.5712,
+        thumbnailUrl: "https://picsum.photos/seed/manek/200/300",
+      ),
+    ]);
+  }
+
+  // Load Baroda places
+  void _loadBarodaPlaces() {
+    places.addAll([
+      PlaceModel(
+        name: "Laxmi Vilas Palace",
+        type: "Historical Place",
+        distance: "5.0 km",
+        latitude: 22.3039,
+        longitude: 73.1920,
+        thumbnailUrl: "https://picsum.photos/seed/baroda/200/300",
+      ),
+      PlaceModel(
+        name: "Sayaji Garden",
+        type: "Park",
+        distance: "3.0 km",
+        latitude: 22.3061,
+        longitude: 73.1852,
+        thumbnailUrl: "https://picsum.photos/seed/sayaji/200/300",
+      ),
+    ]);
+  }
+
+  // Load Australia places
+  void _loadAustraliaPlaces() {
+    places.addAll([
+      PlaceModel(
+        name: "Adelaide",
+        type: "City",
+        distance: "Unknown",
+        latitude: -34.9285,
+        longitude: 138.6007,
+        thumbnailUrl: "https://picsum.photos/seed/sydney/200/300",
+      ),
+    ]);
+  }
+
+  // Load default places
+  void _loadDefaultPlaces() {
     places.addAll([
       PlaceModel(
         name: "Central Park",
@@ -71,14 +150,6 @@ class LocationController extends GetxController {
         longitude: -73.935242,
         thumbnailUrl: "https://picsum.photos/seed/picsum/200/300",
       ),
-      PlaceModel(
-        name: "City Mall",
-        type: "Store",
-        distance: "2.5 km",
-        latitude: 40.712776,
-        longitude: -74.005974,
-        thumbnailUrl: "https://picsum.photos/seed/picsum/200/300",
-      ),
     ]);
   }
 
@@ -89,6 +160,7 @@ class LocationController extends GetxController {
       double distanceB = double.parse(b.distance.split(" ")[0]);
       return distanceA.compareTo(distanceB);
     });
+    update(); // If you're using GetX, call update() to notify listeners.
   }
 
   // Add Markers for Places and User Location on Map

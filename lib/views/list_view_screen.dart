@@ -8,7 +8,6 @@ class ListViewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Sort places by distance initially or when the button is clicked
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -28,36 +27,41 @@ class ListViewScreen extends StatelessWidget {
           ),
           Obx(() {
             // Check if the places list is empty
-            return controller.places.isEmpty
-                ? const Center(child: Text("No places available"))
-                : Expanded(
-              child: ListView.builder(
-                itemCount: controller.places.length,
-                itemBuilder: (context, index) {
-                  PlaceModel place = controller.places[index];
-                  return Card(
-                    margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
-                    child: ListTile(
-                      contentPadding: const EdgeInsets.all(10.0),
-                      leading: Image.network(
-                        place.thumbnailUrl,  // Use thumbnailUrl from PlaceModel
-                        width: 50,
-                        height: 50,
-                        fit: BoxFit.cover,
+            if (controller.places.isEmpty) {
+              return const Center(child: Text("No places available"));
+            } else {
+              return Expanded(
+                child: ListView.builder(
+                  itemCount: controller.places.length,
+                  itemBuilder: (context, index) {
+                    PlaceModel place = controller.places[index];
+                    return Card(
+                      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                      child: ListTile(
+                        contentPadding: const EdgeInsets.all(10.0),
+                        leading: Image.network(
+                          place.thumbnailUrl,  // Use thumbnailUrl from PlaceModel
+                          width: 50,
+                          height: 50,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) {
+                            return Icon(Icons.image, size: 50); // Placeholder icon if image fails to load
+                          },
+                        ),
+                        title: Text(place.name),
+                        subtitle: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(place.type),
+                            Text('Distance: ${place.distance}'),
+                          ],
+                        ),
                       ),
-                      title: Text(place.name),
-                      subtitle: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(place.type),
-                          Text('Distance: ${place.distance}'),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            );
+                    );
+                  },
+                ),
+              );
+            }
           }),
         ],
       ),
