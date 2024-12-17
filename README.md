@@ -1,16 +1,34 @@
 # location_app
 
-A new Flutter project.
+This Flutter project displays nearby places, allows sorting by distance, and provides detailed information about each place, including their name, type, and distance. The app uses various packages to manage location and UI interactions efficiently.
 
-## Getting Started
+## Features Implemented
 
-This project is a starting point for a Flutter application.
+Display Nearby Places: Lists nearby places retrieved from a controller, showing their name, type, and distance.
 
-A few resources to get you started if this is your first Flutter project:
+Sort Places by Distance: Allows users to sort the places by distance with a button click.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Dynamic UI with Obx: Uses GetX for state management to handle the UI updates when the list of places changes.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Error Handling: Displays a message when no places are available.
+
+Image Handling: Displays images (thumbnails) for each place using Image.network to show the place's thumbnail.
+
+## Steps to Run the Project
+
+1. Clone the Repository : git clone <repository-url>
+2. Install Dependencies: flutter pub get
+3. Run the Application: flutter run
+4. Set Up Location Permissions: 
+<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+## Tools/Packages Used
+
+1. Flutter: The framework used to build the app.
+2. GetX: Used for state management, to reactively update the UI when the list of places changes.
+3. Location: A package for handling location services and obtaining the current location of the user.
+4. Geolocator: Provides functions for calculating distances and retrieving the device’s current position.
+5. Image Network: Used to fetch and display images from URLs.
+
+
