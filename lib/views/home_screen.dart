@@ -27,9 +27,19 @@ class HomeScreen extends StatelessWidget {
               if (controller.currentPosition.value != null) {
                 return Column(
                   children: [
+                    const Text(
+                      "Location:",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                      ),
+                    ),
                     Text(
-                      "Location: ${controller.currentPosition.value!.latitude}, ${controller.currentPosition.value!.longitude}",
-                      style: const TextStyle(fontSize: 16),
+                      "${controller.currentPosition.value!.latitude}, ${controller.currentPosition.value!.longitude}",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.green,
+                      ),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
