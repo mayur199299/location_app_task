@@ -15,14 +15,15 @@ class ListViewScreen extends StatelessWidget {
         title: const Text('Nearby Places'),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ElevatedButton(
               onPressed: () {
-                controller.sortPlacesByDistance(); // Sort the places by distance
+                controller.sortPlacesByDistance();
               },
-              child: const Text('Sort by Distance (Ascending)'),
+              child: const Text('Sort by Distance'),
             ),
           ),
           Obx(() {
@@ -34,10 +35,25 @@ class ListViewScreen extends StatelessWidget {
                 itemCount: controller.places.length,
                 itemBuilder: (context, index) {
                   PlaceModel place = controller.places[index];
-                  return ListTile(
-                    title: Text(place.name),
-                    subtitle: Text(place.type),
-                    trailing: Text(place.distance),
+                  return Card(
+                    margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 10.0),
+                    child: ListTile(
+                      contentPadding: const EdgeInsets.all(10.0),
+                      leading: Image.network(
+                        place.thumbnailUrl,  // Use thumbnailUrl from PlaceModel
+                        width: 50,
+                        height: 50,
+                        fit: BoxFit.cover,
+                      ),
+                      title: Text(place.name),
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(place.type),
+                          Text('Distance: ${place.distance}'),
+                        ],
+                      ),
+                    ),
                   );
                 },
               ),

@@ -61,6 +61,7 @@ class LocationController extends GetxController {
         distance: "1.2 km",
         latitude: 40.785091,
         longitude: -73.968285,
+        thumbnailUrl: "https://picsum.photos/seed/picsum/200/300",
       ),
       PlaceModel(
         name: "Joe's Pizza",
@@ -68,6 +69,7 @@ class LocationController extends GetxController {
         distance: "0.8 km",
         latitude: 40.730610,
         longitude: -73.935242,
+        thumbnailUrl: "https://picsum.photos/seed/picsum/200/300",
       ),
       PlaceModel(
         name: "City Mall",
@@ -75,6 +77,7 @@ class LocationController extends GetxController {
         distance: "2.5 km",
         latitude: 40.712776,
         longitude: -74.005974,
+        thumbnailUrl: "https://picsum.photos/seed/picsum/200/300",
       ),
     ]);
   }
@@ -94,9 +97,9 @@ class LocationController extends GetxController {
     if (currentPosition.value != null) {
       // Add user's location as a marker
       mapMarkers.add(Marker(
-        markerId: MarkerId('user_location'),
+        markerId: const MarkerId('user_location'),
         position: LatLng(currentPosition.value!.latitude, currentPosition.value!.longitude),
-        infoWindow: InfoWindow(title: 'Your Location'),
+        infoWindow: const InfoWindow(title: 'Your Location'),
       ));
     }
 
