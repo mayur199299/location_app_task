@@ -11,6 +11,7 @@ class ListViewScreen extends StatelessWidget {
     // Sort places by distance initially or when the button is clicked
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text('Nearby Places'),
       ),
       body: Column(
