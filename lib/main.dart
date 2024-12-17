@@ -1,36 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:location_app/Routes/app_pages.dart';
-import 'package:location_app/Utils/local_storage.dart';
-import 'package:sizer/sizer.dart'; // Import Sizer package
+import 'package:location_app/views/home_screen.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await LocalStorage.instance.init();
+void main() {
+  runApp(const MyApp());
+}
 
-  String? token = LocalStorage.instance.getVerificationToken();
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
-  Widget initialWidget;
-
-  initialWidget = GetMaterialApp(
-    debugShowCheckedModeBanner: false,
-    title: 'MP Buyer',
-    theme: ThemeData(
-      fontFamily: 'Poppins',
-      colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      useMaterial3: true,
-    ),
-    // initialRoute: token == null || token.isEmpty
-    //     ? AppRoutes.splash
-    //     : AppRoutes.homepage,
-    getPages: AppPages.pages,
-  );
-
-  runApp(
-    Sizer(
-      builder: (context, orientation, deviceType) {
-        return initialWidget;
-      },
-    ),
-  );
+  @override
+  Widget build(BuildContext context) {
+    return GetMaterialApp(
+      title: 'Nearby Places App',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(primarySwatch: Colors.blue),
+      home: HomeScreen(),
+    );
+  }
 }

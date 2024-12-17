@@ -1,0 +1,54 @@
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../controllers/location_controller.dart';
+import 'list_view_screen.dart';
+import 'map_view_screen.dart';
+
+class HomeScreen extends StatelessWidget {
+  final LocationController controller = Get.put(LocationController());
+  RxBool isMapView = false.obs; // Track whether we are in MapView or ListView
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Fetch Location')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Obx(() {
+              if (controller.isLoading.value) {
+                return const CircularProgressIndicator();
+              }
+
+              if (controller.currentPosition.value != null) {
+                return Column(
+                  children: [
+                    Text(
+                      "Location: ${controller.currentPosition.value!.latitude}, ${controller.currentPosition.value!.longitude}",
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () {
+                        isMapView.value = !isMapView.value;
+                        if (isMapView.value) {
+                          Get.to(() => MapViewScreen());
+                        } else {
+                          Get.to(() => ListViewScreen());
+                        }
+                      },
+                      child: Text(isMapView.value ? "View List" : "View Map"),
+                    ),
+                  ],
+                );
+              }
+
+              return const Text("Fetching location...");
+            }),
+          ],
+        ),
+      ),
+    );
+  }
+}
